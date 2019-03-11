@@ -2,10 +2,21 @@ from random import randint
 
 game_running = True
 round_number = 1
-player = {'name': 'Eugene', 'attack': 20, 'heal': 15, 'health': 100}
+player = {'name': 'Eugene', 'attack_min': 10,
+          'attack_max': 20, 'heal_min': 10, 'heal_max': 20, 'health': 100}
 monster = {'name': 'Monster', 'attack_min': 10,
            'attack_max': 20, 'health': 100}
 player['name'] = input('Enter Player name:')
+
+
+def value_calculate(min, max):
+    return randint(min, max)
+
+
+def end_game(round_number):
+    round_number = round_number + 1
+    print(
+        '- - - - - - - - - - -\n    Round {}\n- - - - - - - - - - -'.format(round_number))
 
 
 while game_running == True:
@@ -31,29 +42,32 @@ while game_running == True:
         player_choice = input('Choose an action:')
 
         if player_choice == '1':
-            monster_attack = randint(
-                monster['attack_min'], monster['attack_max'])
-            monster['health'] = monster['health'] - player['attack']
+
+            monster['health'] = monster['health'] - \
+                value_calculate(player['attack_min'], player['attack_max'])
             if monster['health'] <= 0:
                 palyer_won = True
             else:
-                player['health'] = player['health'] - monster_attack
+                player['health'] = player['health'] - \
+                    value_calculate(
+                        monster['attack_min'], monster['attack_max'])
                 if player['health'] <= 0:
                     monster_won = True
 
             print('Monster health: ' + str(monster['health']))
-            print('Monster health: ' + str(player['health']))
+            print('Player health: ' + str(player['health']))
 
         elif player_choice == '2':
-            monster_attack = randint(
-                monster['attack_min'], monster['attack_max'])
-            player['health'] = player['health'] + player['heal']
-            player['health'] = player['health'] - monster_attack
+
+            player['health'] = player['health'] + \
+                value_calculate(player['heal_min'], player['heal_max'])
+            player['health'] = player['health'] - \
+                value_calculate(monster['attack_min'], monster['attack_max'])
             if player['health'] <= 0:
                 monster_won = True
 
             print('Monster health: ' + str(monster['health']))
-            print('Monster health: ' + str(player['health']))
+            print('Player health: ' + str(player['health']))
 
         elif player_choice == 'Q' or player_choice == 'q':
             print('- - - EXITED - - -')
@@ -63,7 +77,5 @@ while game_running == True:
             print('Invalid Input!')
 
         if palyer_won == True or monster_won == True:
-            round_number = round_number + 1
-            print(
-                '- - - - - - - - - - -\n    Round {}\n- - - - - - - - - - -'.format(round_number))
+            end_game(round_number)
             new_round = False
