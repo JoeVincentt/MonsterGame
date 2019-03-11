@@ -20,7 +20,7 @@ while game_running == True:
         '- - - - - - - - - - -\n    Round {}\n- - - - - - - - - - -'.format(round_number))
 
     while new_round == True:
-        monster_attack = randint(monster['attack_min'], monster['attack_max'])
+
         palyer_won = False
         monster_won = False
 
@@ -31,6 +31,8 @@ while game_running == True:
         player_choice = input('Choose an action:')
 
         if player_choice == '1':
+            monster_attack = randint(
+                monster['attack_min'], monster['attack_max'])
             monster['health'] = monster['health'] - player['attack']
             if monster['health'] <= 0:
                 palyer_won = True
@@ -43,8 +45,10 @@ while game_running == True:
             print('Monster health: ' + str(player['health']))
 
         elif player_choice == '2':
+            monster_attack = randint(
+                monster['attack_min'], monster['attack_max'])
             player['health'] = player['health'] + player['heal']
-            player['health'] = player['health'] - int(0.5 * monster_attack)
+            player['health'] = player['health'] - monster_attack
             if player['health'] <= 0:
                 monster_won = True
 
